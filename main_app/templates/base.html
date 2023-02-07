@@ -1,0 +1,50 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Mini Collector</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/darkly/bootstrap.min.css"
+    />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <header class="navbar-fixed">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a href="/" class="navbar-brand">&nbsp;&nbsp;MiniCollector</a>
+            </li>
+          </ul>
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+            {% if user.is_authenticated %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'paints_create' %}">Add a Paint</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'paints_index' %}">View All Paints</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'minis_create' %}">Add a Mini</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">View All Minis</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'minis_create' %}">Add a Mini</a></li>
+            <li class="nav-item"><a class="nav-link" href="/minis">View My Minis</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Log Out</a></li>
+            {% else %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Log In</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'signup' %}">Sign Up</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <main class="container">{% block content %} {% endblock %}</main>
+    <footer class="page-footer">
+      <div class="right">
+        All Rights Reserved, &copy; 2023 Mini Collector &nbsp;
+      </div>
+    </footer>
+  </body>
+</html>

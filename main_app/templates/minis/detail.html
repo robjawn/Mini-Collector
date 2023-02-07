@@ -1,0 +1,72 @@
+{% extends 'base.html' %} {% block content %}
+
+<h2>Mini Details</h2>
+<div class="row">
+  <div class="col">
+  <div class="card mb-3">
+      <h3 class="card-header">{{ mini.name }}</h3>
+      <div class="card-body">
+        <h5 class="card-title">{{ mini.kind }} </h5>
+      </div>
+      <img src="{{ mini.image }}" class="rounded mx-auto d-block">
+      <div class="card-body">
+        <p class="card-text">{{mini.description}}</p>
+      </div>
+      <div class="card-body">
+        <p class ="card-text">Inventory: {{latest_inventory.get_inventory_display}}</p>
+        <br>
+        <p class ="card-text">Last Update: {{latest_inventory.date}}</p>
+        <br>
+        <form action="{% url 'add_stock' mini.id %}" method="post">
+          {% csrf_token %} 
+          {{ stock_form.as_p }}
+          <input type="submit" class="btn btn-secondary" value="Update Inventory" />
+        </form>
+      </div>
+      <div class="card-body">
+        <a href="{% url 'minis_update' mini.id %}" class="card-link">Edit</a>
+        <a href="{% url 'minis_delete' mini.id %}" class="card-link">Delete</a>
+      </div>
+      <div class="card-footer text-muted">
+      </div>
+  </div>
+</div>
+
+<div class="col">
+  <h3 class="card-header">Included Paint</h3>
+  {% if mini.paints.count %} {% for paint in mini.paints.all %}
+  <div class="card mb-3">
+    <div class="card-body">
+      <h4 class="card-text"><span style="color:{{paint.color}}">{{paint.name}}</span></h4>
+    </div>
+  </div>
+    {% endfor %} {% else %}
+    <h5 class="card-text">No Paint Added</h5>
+    {% endif %}
+</div>
+
+<div class="col">
+  <h3>Available Paints</h3>
+  {% if paints.count %}
+    {% for paint in paints.all %}
+      <div class="card">
+        <div class="card-content">
+          <span class="card-title">
+            <span style="{{ paint.color }}">{{ paint.name }} </span>
+        </div>
+        <div class="card-action">
+          <form action="{% url 'assoc_paint' mini.id paint.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-secondary">Add</button>
+          </form>
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+    <h5>{{mini.name}} Already Has All Paints Available</h5>
+    {% endif %}
+</div>
+
+</div>
+
+  {% endblock %}
